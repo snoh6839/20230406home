@@ -90,6 +90,23 @@ for ($i = 0; $i < $numAces; $i++) { if ($value + 11 <=21) { $value +=11; } else 
     }
     }
 
+class Dealer extends Player
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function showHand()
+    {
+        echo "당신의 카드: ";
+        foreach ($this->hand as $card) {
+            echo $card['face'] . $card['suit'] . " ";
+        }
+        echo "\n";
+    }
+}
+
     class Play {
     private $drawDeck;
 
@@ -156,7 +173,7 @@ for ($i = 0; $i < $numAces; $i++) { if ($value + 11 <=21) { $value +=11; } else 
                 }
             }
         }
-
+    }
         public function reset() {
             $this->deck = new Deck();
             $this->deck->shuffle();
@@ -164,7 +181,6 @@ for ($i = 0; $i < $numAces; $i++) { if ($value + 11 <=21) { $value +=11; } else 
             $this->dealer = new Player();
         }
     }
-}
 
     $game = new Blackjack();
     $game->start();

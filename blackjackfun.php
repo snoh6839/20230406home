@@ -39,8 +39,7 @@ function createDeck() {
 // 카드 한 장을 뽑음
 function drawCard(&$deck)
 {
-    $copy = $deck;
-    $card = array_shift($copy);
+    $card = array_shift($deck);
     return $card;
 }
 
@@ -99,24 +98,26 @@ while ( !($input === 0)){
         echo "\n -----New Game!------ \n";
         $userHand = array(); // 유저 카드 핸드 초기화
         $dealerHand = array(); // 딜러 카드 핸드 초기화
-        
+
         // 유저와 딜러가 각각 2장의 카드를 받음
         userDrawCard($deck, $userHand);
         dealerDrawCard($deck, $dealerHand);
         userDrawCard($deck, $userHand);
         dealerDrawCard($deck, $dealerHand);
-        
+
         echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
         fscanf(STDIN, "%d", $input);
         echo "\n";
         if ($input === 0) {
             break;
         } else if ($input === 1) {
-            var_dump($deck);
             userDrawCard($deck, $userHand);
+            var_dump($deck);
             $userValue = calculateHandValue($userHand);
             if ($userValue > 21) {
                 echo "유저 패배! 카드의 합이 21을 초과했습니다.\n";
+                $userHand = array(); // 유저 카드 핸드 초기화
+                $dealerHand = array(); // 딜러 카드 핸드 초기화
             }
             
         } else if ($input === 2) {
