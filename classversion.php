@@ -113,6 +113,66 @@ class Dealer extends Player {
     }
 }
 
+class Blackjack {
+    private $deck;
+    private $player;
+    private $dealer;
+
+    public function __construct($playerName) {
+        $this->deck = new Deck();
+        $this->player = new Player($playerName);
+        $this->dealer = new Dealer();
+    }
+
+    public function start() {
+        $this->deck->shuffle();
+        $this->player->clearHand();
+        $this->dealer->clearHand();
+
+        $this->player->addCardToHand($this->deck->drawCard());
+        $this->dealer->addCardToHand($this->deck->drawCard());
+        $this->player->addCardToHand($this->deck->drawCard());
+        $this->dealer->addCardToHand($this->deck->drawCard());
+
+        $this->dealer->showFirstCard();
+        echo "\n";
+
+        while ($this->player->getHandValue() < 21) {
+            $choice = readline("Hit or stand? ");
+
+            if (strtolower($choice) == "hit") {
+                $this->player->addCardToHand($this->deck->drawCard());
+                echo $this->player->getName() . "'s hand: ";
+                foreach ($this->player->getHand() as $card) {
+                    echo $card->getFace() . $card->getSuit() . " ";
+                }
+                echo "\n";
+            } else {
+                break;
+            }
+        }
+
+        $this->dealer->play($this->deck);
+
+        echo "Dealer's hand: ";
+        foreach ($this->dealer->getHand() as $card) {
+            echo $card->getFace() . $card->getSuit() . " ";
+        }
+        echo "\n";
+
+        if ($this->player->getHandValue() > 21) {
+            echo $this->player->getName() . " busts! Dealer wins.\n";
+        } elseif ($this->dealer->getHandValue() > 21) {
+            echo "Dealer busts! " . $this->player->getName() . " wins.\n";
+        } elseif ($this->player->getHandValue() > $this->dealer->getHandValue()) {
+            echo $this->player->getName() . " wins.\n";
+        } elseif ($this->player->getHandValue() < $this->dealer->getHandValue()) {
+            echo "Dealer wins.\n";
+        } else {
+            echo "Push.\n";
+        }
+    }
+}
 
 
     ?>
