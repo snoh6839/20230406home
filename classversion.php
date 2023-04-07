@@ -53,28 +53,28 @@ for ($i = 0; $i < $numAces; $i++) { if ($value + 11 <=21) { $value +=11; } else 
     }
     }
 
-    class Player {
-    protected $hand;
-    protected $value;
+class Player {
+protected $hand;
+protected $value;
 
-    public function __construct() {
-    $this->hand = array();
-    $this->value = 0;
-    }
+public function __construct() {
+$this->hand = array();
+$this->value = 0;
+}
 
-    public function drawCard($deck) {
-    $this->hand[] = $deck->drawCard();
-    $this->value = $deck->calculateHandValue($this->hand);
-    }
+public function drawCard($deck) {
+$this->hand[] = $deck->drawCard();
+$this->value = $deck->calculateHandValue($this->hand);
+}
 
-    public function getHand() {
-    return $this->hand;
-    }
+public function getHand() {
+return $this->hand;
+}
 
-    public function getValue() {
-    return $this->value;
-    }
-    }
+public function getValue() {
+return $this->value;
+}
+}
 
 class User extends Player {
     public function __construct() {
@@ -107,83 +107,83 @@ class Dealer extends Player
     }
 }
 
-    class Blackjack {
-    private $drawDeck;
+class Blackjack {
+private $drawDeck;
 
-    public function __construct() {
-    $this->drawDeck = new DrawDeck();
-    }
+public function __construct() {
+$this->drawDeck = new DrawDeck();
+}
 
-    public function startGame() {
-    $input = NULL;
-    while ( !($input === 0)){
-    echo "덱을 다 쓰셨습니다. 새로운 덱을 꺼내옵니다.";
-    $deck = new Deck(); // 카드 덱 생성
+public function startGame() {
+$input = NULL;
+while ( !($input === 0)){
+echo "덱을 다 쓰셨습니다. 새로운 덱을 꺼내옵니다.";
+$deck = new Deck(); // 카드 덱 생성
 
-    while (true) {
-    echo "\n -----New Game!------ \n";
-    $user = new User($this->drawDeck);
-    $dealer = new Dealer($this->drawDeck);
+while (true) {
+echo "\n -----New Game!------ \n";
+$user = new User($this->drawDeck);
+$dealer = new Dealer($this->drawDeck);
 
-    // 유저와 딜러가 각각 2장의 카드를 받음
-    $user->drawCard();
-    $dealer->drawCard();
-    $user->drawCard();
-    $dealer->drawCard();
+// 유저와 딜러가 각각 2장의 카드를 받음
+$user->drawCard();
+$dealer->drawCard();
+$user->drawCard();
+$dealer->drawCard();
 
-    echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
-    fscanf(STDIN, "%d", $input);
-    echo "\n";
-    if ($input === 0) {
-    break;
-    } else if ($input === 1) {
-    $user->drawCard();
-    $userValue = $user->calculateHandValue();
-    if ($userValue > 21) {
-    echo "유저 패배! 카드의 합이 21을 초과했습니다.\n";
-    }
+echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
+fscanf(STDIN, "%d", $input);
+echo "\n";
+if ($input === 0) {
+break;
+} else if ($input === 1) {
+$user->drawCard();
+$userValue = $user->calculateHandValue();
+if ($userValue > 21) {
+echo "유저 패배! 카드의 합이 21을 초과했습니다.\n";
+}
 
-    } else if ($input === 2) {
-    $userValue = $user->calculateHandValue();
+} else if ($input === 2) {
+$userValue = $user->calculateHandValue();
+$dealerValue = $dealer->calculateHandValue();
+
+if ($dealerValue >= 17) {
+while ($dealerValue < $userValue && $dealerValue < 21) { $dealer->drawCard();
     $dealerValue = $dealer->calculateHandValue();
+    }
+    }
 
-    if ($dealerValue >= 17) {
-    while ($dealerValue < $userValue && $dealerValue < 21) { $dealer->drawCard();
-        $dealerValue = $dealer->calculateHandValue();
-        }
-        }
-
-        if ($dealerValue > 21 || $userValue > $dealerValue) {
-        echo "유저 승리! 카드의 합이 더 높습니다.\n";
+    if ($dealerValue > 21 || $userValue > $dealerValue) {
+    echo "유저 승리! 카드의 합이 더 높습니다.\n";
+    echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
+    } else if ($userValue === $dealerValue) {
+    $userCards = count($user->getHand());
+    $dealerCards = count($dealer->getHand());
+    if ($userCards < $dealerCards) { echo "유저 승리! 카드의 수가 적습니다.\n" ; echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue; } else if ($userCards> $dealerCards) {
+        echo "딜러 승리! 카드의 수가 적습니다.\n";
         echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
-        } else if ($userValue === $dealerValue) {
-        $userCards = count($user->getHand());
-        $dealerCards = count($dealer->getHand());
-        if ($userCards < $dealerCards) { echo "유저 승리! 카드의 수가 적습니다.\n" ; echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue; } else if ($userCards> $dealerCards) {
-            echo "딜러 승리! 카드의 수가 적습니다.\n";
-            echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
-            } else {
-            echo "무승부! 카드의 수와 합이 같습니다.\n";
-            echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
-            }
-            }else {
-                        echo "딜러 승리!\n";
-                        echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
-                    }
+        } else {
+        echo "무승부! 카드의 수와 합이 같습니다.\n";
+        echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
+        }
+        }else {
+                    echo "딜러 승리!\n";
+                    echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
                 }
             }
         }
     }
-        public function reset() {
-            $this->deck = new Deck();
-            $this->deck->shuffle();
-            $this->user = new Player();
-            $this->dealer = new Player();
-        }
+}
+    public function reset() {
+        $this->deck = new Deck();
+        $this->deck->shuffle();
+        $this->user = new Player();
+        $this->dealer = new Player();
     }
+}
 
-    $game = new Blackjack();
-    $game->start();
+$game = new Blackjack();
+$game->startGame();
 
 
-            ?>
+?>

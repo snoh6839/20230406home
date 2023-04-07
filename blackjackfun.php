@@ -109,6 +109,7 @@ while (!($input === 0)) {
     echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
     while (true) {
         fscanf(STDIN, "%d", $input);
+        
         if ($input === 0) {
             break;
         } else if ($input === 1) {
