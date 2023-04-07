@@ -76,19 +76,19 @@ for ($i = 0; $i < $numAces; $i++) { if ($value + 11 <=21) { $value +=11; } else 
     }
     }
 
-    class User extends Player {
+class User extends Player {
     public function __construct() {
-    parent::__construct();
+        parent::__construct();
     }
 
     public function showHand() {
-    echo "당신의 카드: ";
-    foreach ($this->hand as $card) {
-    echo $card['face'] . $card['suit'] . " ";
+        echo "당신의 카드: ";
+        foreach ($this->hand as $card) {
+        echo $card['face'] . $card['suit'] . " ";
+        }
+        echo "\n";
     }
-    echo "\n";
-    }
-    }
+}
 
 class Dealer extends Player
 {
@@ -107,7 +107,7 @@ class Dealer extends Player
     }
 }
 
-    class Play {
+    class Blackjack {
     private $drawDeck;
 
     public function __construct() {

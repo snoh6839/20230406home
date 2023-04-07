@@ -23,7 +23,8 @@
 
 
 // 초기 카드 덱 생성
-function createDeck() {
+function createDeck()
+{
     $deck = array();
     $suits = array('스페이드', '하트', '다이아', '클로버');
     $faces = array('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A');
@@ -39,13 +40,12 @@ function createDeck() {
 // 카드 한 장을 뽑음
 function drawCard(&$deck)
 {
-    $card = array_shift($deck);
-    return $card;
+    return array_shift($deck);
 }
 
-
 // 카드의 합을 계산
-function calculateHandValue($hand) {
+function calculateHandValue($hand)
+{
     $value = 0;
     $numAces = 0;
     foreach ($hand as $card) {
@@ -69,7 +69,8 @@ function calculateHandValue($hand) {
 }
 
 // 유저에게 카드를 뽑음
-function userDrawCard(&$deck, &$userHand) {
+function userDrawCard(&$deck, &$userHand)
+{
     $userHand[] = drawCard($deck);
     echo "당신의 카드: ";
     foreach ($userHand as $card) {
@@ -79,7 +80,8 @@ function userDrawCard(&$deck, &$userHand) {
 }
 
 // 딜러에게 카드를 뽑음
-function dealerDrawCard(&$deck, &$dealerHand) {
+function dealerDrawCard(&$deck, &$dealerHand)
+{
     $dealerHand[] = drawCard($deck);
     foreach ($dealerHand as $card) {
         return $card['face'] . $card['suit'] . " ";
@@ -90,36 +92,41 @@ function dealerDrawCard(&$deck, &$dealerHand) {
 $input = NULL;
 $deck = array();
 // $deck = createDeck(); // 카드 덱 생성
-while ( !($input === 0)){
-    echo "덱을 다 쓰셨습니다. 새로운 덱을 꺼내옵니다.";
+while (!($input === 0)) {
+    echo "새로운 덱을 꺼내옵니다.";
     $deck = createDeck(); // 카드 덱 생성
 
+    echo "\n -----New Game!------ \n";
+    $userHand = array(); // 유저 카드 핸드 초기화
+    $dealerHand = array(); // 딜러 카드 핸드 초기화
+
+    // 유저와 딜러가 각각 2장의 카드를 받음
+    userDrawCard($deck, $userHand);
+    dealerDrawCard($deck, $dealerHand);
+    userDrawCard($deck, $userHand);
+    dealerDrawCard($deck, $dealerHand);
+
+    echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
     while (true) {
-        echo "\n -----New Game!------ \n";
-        $userHand = array(); // 유저 카드 핸드 초기화
-        $dealerHand = array(); // 딜러 카드 핸드 초기화
-
-        // 유저와 딜러가 각각 2장의 카드를 받음
-        userDrawCard($deck, $userHand);
-        dealerDrawCard($deck, $dealerHand);
-        userDrawCard($deck, $userHand);
-        dealerDrawCard($deck, $dealerHand);
-
-        echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
         fscanf(STDIN, "%d", $input);
-        echo "\n";
         if ($input === 0) {
             break;
         } else if ($input === 1) {
             userDrawCard($deck, $userHand);
-            var_dump($deck);
             $userValue = calculateHandValue($userHand);
             if ($userValue > 21) {
                 echo "유저 패배! 카드의 합이 21을 초과했습니다.\n";
+                echo "\n -----New Game!------ \n";
                 $userHand = array(); // 유저 카드 핸드 초기화
                 $dealerHand = array(); // 딜러 카드 핸드 초기화
+
+                // 유저와 딜러가 각각 2장의 카드를 받음
+                userDrawCard($deck, $userHand);
+                dealerDrawCard($deck, $dealerHand);
+                userDrawCard($deck, $userHand);
+                dealerDrawCard($deck, $dealerHand);
             }
-            
+            echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
         } else if ($input === 2) {
             $userValue = calculateHandValue($userHand);
             $dealerValue = calculateHandValue($dealerHand);
@@ -134,15 +141,18 @@ while ( !($input === 0)){
             if ($dealerValue > 21 || $userValue > $dealerValue) {
                 echo "유저 승리! 카드의 합이 더 높습니다.\n";
                 echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
+                
             } else if ($userValue === $dealerValue) {
                 $userCards = count($userHand);
                 $dealerCards = count($dealerHand);
                 if ($userCards < $dealerCards) {
                     echo "유저 승리! 카드의 수가 적습니다.\n";
                     echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
+                    
                 } else if ($userCards > $dealerCards) {
                     echo "딜러 승리! 카드의 수가 적습니다.\n";
                     echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
+                    
                 } else {
                     $userSuit = calculateHandValue($userHand);
                     $dealerSuit = calculateHandValue($dealerHand);
@@ -158,18 +168,25 @@ while ( !($input === 0)){
                 echo "딜러 승리! 카드의 합이 더 높습니다.\n";
                 echo "딜러 카드 합 : " . $dealerValue . " 유저 카드 합 : " . $userValue;
             }
+            echo "\n -----New Game!------ \n";
             $userHand = array(); // 유저 카드 핸드 초기화
             $dealerHand = array(); // 딜러 카드 핸드 초기화
+
+            // 유저와 딜러가 각각 2장의 카드를 받음
+            userDrawCard($deck, $userHand);
+            dealerDrawCard($deck, $dealerHand);
+            userDrawCard($deck, $userHand);
+            dealerDrawCard($deck, $dealerHand);
+
+            echo "카드를 더 받으시겠습니까? (1: Yes, 2: No, 0: Quit) \n";
         } else {
             echo "잘못된 입력입니다. 다시 입력해주세요";
         }
 
-        if(count($deck) <= 2)
-        {
+        if (count($deck) < 4) {
             // var_dump($deck);
+            echo "잠깐, 덱을 다 쓰셨습니다. 새 덱을 준비하겠습니다.";
             break 2;
         }
     }
-    
 }
-?>
