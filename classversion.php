@@ -1,3 +1,4 @@
+<?php
 class Deck {
     private $suits;
     private $faces;
@@ -111,58 +112,7 @@ class Dealer extends Player {
         }
     }
 }
-class Blackjack {
-    private $deck;
-    private $player;
-    private $dealer;
 
-    public function __construct() {
-        $this->deck = new Deck();
-        $this->deck->shuffle();
-        $this->player = new Player("플레이어
-private $playerHand;
-private $dealerHand;
 
-public function __construct()
-{
-    $this->createDeck(true);
-    $this->playerHand = array();
-    $this->dealerHand = array();
-    $this->playerHand[] = $this->drawCard();
-    $this->playerHand[] = $this->drawCard();
-    $this->dealerHand[] = $this->drawCard();
-    $this->dealerHand[] = $this->drawCard();
-}
 
-private function drawCard()
-{
-    if (empty($this->deck)) {
-        $this->createDeck(true);
-    }
-    return array_shift($this->deck);
-}
-private function calculateHandValue($hand, $isDealer = false)
-{
-    $value = 0;
-    $aceCount = 0;
-    foreach ($hand as $card) {
-        if ($card['face'] == 'A') {
-            $aceCount++;
-        } elseif (in_array($card['face'], array('K', 'Q', 'J', '10'))) {
-            $value += 10;
-        } else {
-            $value += intval($card['face']);
-        }
-    }
-    for ($i = 0; $i < $aceCount; $i++) {
-        if ($value + 11 <= 21) {
-            $value += 11;
-        } else {
-            $value += 1;
-        }
-    }
-    if ($isDealer && count($hand) == 2 && $value >= 17 && $value <= 21) {
-        $value += 10;
-    }
-    return $value;
-}
+    ?>
