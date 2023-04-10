@@ -132,7 +132,7 @@ while (!($input === 0)) {
             $userValue = calculateHandValue($userHand);
             $dealerValue = calculateHandValue($dealerHand);
 
-            if ($dealerValue >= 17) {
+            if ($dealerValue <= 17) {
                 while ($dealerValue < $userValue && $dealerValue < 21) {
                     dealerDrawCard($deck, $dealerHand);
                     $dealerValue = calculateHandValue($dealerHand);
